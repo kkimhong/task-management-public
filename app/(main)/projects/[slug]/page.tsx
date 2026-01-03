@@ -6,7 +6,7 @@ export default async function BlogPost({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  await new Promise(resolve => setTimeout(resolve, 500))
+  await new Promise(resolve => setTimeout(resolve, 200))
   return (
     <div className="flex h-screen justify-center items-center">
       <div className="px-8 py-4 rounded-2xl border border-zinc-500 ">

@@ -1,7 +1,8 @@
-import * as React from "react"
+"use client";
+import * as React from "react";
 
-import { SearchForm } from "@/components/search-form"
-import { VersionSwitcher } from "@/components/version-switcher"
+import { SearchForm } from "@/components/search-form";
+import { VersionSwitcher } from "@/components/version-switcher";
 import {
   Sidebar,
   SidebarContent,
@@ -13,39 +14,32 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar";
+import { usePathname } from "next/navigation";
+import { ClipboardCheck, Folder, House, Icon, icons } from "lucide-react";
 
 // This is sample data.
 const data = {
   versions: ["1.0.1", "1.1.0-alpha", "2.0.0-beta1"],
   navMain: [
     {
-      title: "Getting Started",
+      title: "Menu",
       url: "#",
       items: [
         {
           title: "Dashboard",
           url: "/",
+          icon: House,
         },
         {
-          title: "New Task",
-          url: "/tasks/new",
-        },
-        {
-          title: "All Tasks",
+          title: "Tasks",
           url: "/tasks",
+          icon: ClipboardCheck
         },
         {
-          title: "Single Task",
-          url: "/tasks/67",
-        },
-        {
-          title: "All Project",
+          title: "Projects",
           url: "/projects",
-        },
-        {
-          title: "Project Detail",
-          url: "/projects/detail",
+          icon: Folder,
         },
       ],
     },
@@ -53,6 +47,7 @@ const data = {
 };
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const pathname = usePathname();
   return (
     <Sidebar {...props}>
       <SidebarHeader>
@@ -71,8 +66,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <SidebarMenu>
                 {item.items.map((item) => (
                   <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton asChild isActive={item.isActive}>
-                      <a href={item.url}>{item.title}</a>
+                    <SidebarMenuButton asChild isActive={pathname === item.url}>
+                      <a href={item.url}>
+                        <item.icon />
+                        {item.title}
+                      </a>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -83,5 +81,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarContent>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

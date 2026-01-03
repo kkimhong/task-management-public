@@ -1,14 +1,11 @@
 import React from 'react'
+import { TaskForm } from './components/form-card';
 
-type Props = {}
-
-const page = async (props: Props) => {
+const page = async () => {
   await new Promise((resolve) => setTimeout(resolve, 500));
   return (
-    <div className="flex h-screen justify-center items-center">
-      <div className="px-8 py-4 rounded-2xl border border-zinc-500 ">
-        <h1 className="font-semibold">All Task</h1>
-      </div>
+    <div className="flex justify-center items-center m-4">
+      <TaskForm/>
     </div>
   );
 }
