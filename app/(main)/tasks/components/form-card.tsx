@@ -30,13 +30,18 @@ import {
   InputGroupTextarea,
 } from "@/components/ui/input-group";
 import { formSchema } from "@/app/validations/task-schema";
+import { Checkbox } from "@radix-ui/react-checkbox";
+import { Label } from "@radix-ui/react-label";
+import { fi } from "zod/v4/locales";
+import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
 
 export function TaskForm() {
-  const form = useForm<z.infer<typeof formSchema>>({
+  const {control, handleSubmit, register, formState:{errors}, reset} = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
+      priority: "EASY"
     },
   });
 
@@ -66,11 +71,11 @@ export function TaskForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <form id="form-rhf-demo" onSubmit={form.handleSubmit(onSubmit)}>
+        <form id="form-rhf-demo" onSubmit={handleSubmit(onSubmit)}>
           <FieldGroup>
             <Controller
               name="title"
-              control={form.control}
+              control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="form-rhf-demo-title">
@@ -78,7 +83,7 @@ export function TaskForm() {
                   </FieldLabel>
                   <Input
                     {...field}
-                    id="form-rhf-demo-title"
+                    id="task-title"
                     aria-invalid={fieldState.invalid}
                     placeholder="Watering plant"
                     autoComplete="off"
@@ -91,7 +96,7 @@ export function TaskForm() {
             />
             <Controller
               name="description"
-              control={form.control}
+              control={control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
                   <FieldLabel htmlFor="form-rhf-demo-description">
@@ -100,7 +105,7 @@ export function TaskForm() {
                   <InputGroup>
                     <InputGroupTextarea
                       {...field}
-                      id="form-rhf-demo-description"
+                      id="task-description"
                       placeholder="Watering plant before afternoon..."
                       rows={6}
                       className="min-h-24 resize-none"
@@ -122,15 +127,60 @@ export function TaskForm() {
                 </Field>
               )}
             />
+            <Controller
+              name="completed"
+              control={control}
+              render={({ field }) => (
+                <Field>
+                  <FieldLabel htmlFor="form-rhf-demo-description">
+                    Status
+                  </FieldLabel>
+                  <div className="flex items-center gap-4">
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <Label>Complete</Label>
+                  </div>
+                </Field>
+              )}
+            />
+            <Controller
+              control={control}
+              name={"priority"}
+              render={({ field, fieldState }) => (
+                <Field data-invalid={fieldState.invalid}>
+                  <FieldLabel htmlFor="priority">Priority</FieldLabel>
+                  <Select
+                    name={field.name}
+                    value={field.value}
+                    onValueChange={field.onChange}>
+                    <SelectTrigger
+                      aria-invalid={fieldState.invalid}
+                      id="priority">
+                      <SelectValue placeholder="Select" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="high">High</SelectItem>
+                      <SelectItem value="medium">Medium</SelectItem>
+                      <SelectItem value="low">Low</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </Field>
+              )}
+            />
           </FieldGroup>
         </form>
       </CardContent>
       <CardFooter>
         <Field orientation="horizontal">
-          <Button type="button" variant="outline" onClick={() => form.reset()}>
+          <Button type="button" variant="outline" onClick={() => reset()}>
             Reset
           </Button>
-          <Button type="submit" form="form-rhf-demo" onClick={() => form.handleSubmit}>
+          <Button
+            type="submit"
+            form="form-rhf-demo"
+            onClick={() => handleSubmit}>
             Submit
           </Button>
         </Field>

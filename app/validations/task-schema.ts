@@ -15,7 +15,7 @@ export const formSchema = z.object({
     .max(100, "Description must be at most 100 characters.")
     .optional(),
   completed: z.boolean().default(false).optional(),
-  priority: z.enum(["EASY", "MEDIUM", "HARD"]),
+  priority: z.enum(["EASY", "MEDIUM", "HIGH"]),
 });
 
 export type Task = z.infer<typeof formSchema>;
