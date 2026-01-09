@@ -1,9 +1,6 @@
-import { resolve } from 'path';
 import React from 'react'
 
-type Props = {}
-
-const page = async (props: Props) => {
+const page = async () => {
   await new Promise(resolve => setTimeout(resolve, 200))
   return (
     <div className="flex h-screen justify-center items-center">

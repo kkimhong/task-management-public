@@ -58,7 +58,7 @@ export default function TaskDetailPage() {
         <CardContent>
           <Label className="font-semibold">SubTask</Label>
           <div className="grid gap-2 mt-2">
-            {task.subtasks?.map((subtask: any) => (
+            {task.subtasks?.map((subtask: unknown) => (
               <div
                 key={subtask.id}
                 className="flex items-center space-x-3 p-2 rounded-md border bg-card">
@@ -89,7 +89,7 @@ export default function TaskDetailPage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="flex flex-col gap-6">
-            {task.comments?.map((comment: any) => (
+            {task.comments?.map((comment: unknown) => (
               <div key={comment.id} className="flex items-start gap-3">
                 <Avatar className="h-9 w-9 shrink-0 aspect-square rounded-full overflow-hidden border">
                   <AvatarFallback className="bg-purple-700 text-white font-semibold flex items-center justify-center rounded-full w-full h-full">

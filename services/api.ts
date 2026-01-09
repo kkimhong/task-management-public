@@ -1,5 +1,4 @@
 import { Task } from "@/app/(main)/data-table";
-import { Project } from "next/dist/build/swc/types";
 
 export const fetchTasks = async (): Promise<Task[]> => {
   const response = await fetch("http://localhost:3001/tasks");
@@ -13,12 +12,4 @@ export const fetchTaskById = async (id: string) => {
   const res = await fetch(`http://localhost:3001/tasks/${id}`);
   if (!res.ok) throw new Error("Task not found");
   return res.json();
-};
-
-export const fetchProjects = async (): Promise<Project[]> => {
-  const response = await fetch("http://localhost:3001/projects");
-  if (!response.ok) {
-    throw new Error("Network response was not ok");
-  }
-  return response.json();
 };

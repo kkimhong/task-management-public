@@ -14,12 +14,7 @@ import {
   type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import {
-  ChevronDown,
-  Flag,
-  MoreHorizontal,
-  Plus,
-} from "lucide-react";
+import { ChevronDown, Flag, MoreHorizontal, Plus } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,74 +37,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Badge } from "../../components/ui/badge";
-import { IconCircleCheckFilled, IconLoader } from "@tabler/icons-react";
 import { useQuery } from "@tanstack/react-query";
 import { fetchTasks } from "@/services/api";
 import Loading from "./loading";
-
-// const data: Task[] = [
-//   {
-//     id: "8",
-//     title: "Implement OAuth2 Login",
-//     description:
-//       "Integrate Google and GitHub social authentication using Passport.js.",
-//     projectId: "3",
-//     status: "in-progress",
-//     priority: "high",
-//     dueDate: "Tomorrow",
-//     tags: ["auth", "security"],
-//     subtasks: [
-//       { id: "1", title: "Register OAuth apps", completed: true },
-//       { id: "2", title: "Setup strategy callbacks", completed: false },
-//       { id: "3", title: "Test JWT issuance", completed: false },
-//     ],
-//     comments: [],
-//   },
-//   {
-//     id: "9",
-//     title: "Optimize Landing Page",
-//     description:
-//       "Improve LCP and CLS scores to meet Core Web Vitals requirements.",
-//     projectId: "1",
-//     status: "todo",
-//     priority: "medium",
-//     dueDate: "Next Month",
-//     tags: ["frontend", "performance"],
-//     subtasks: [
-//       { id: "1", title: "Compress hero images", completed: false },
-//       { id: "2", title: "Implement lazy loading", completed: false },
-//     ],
-//     comments: [],
-//   },
-//   {
-//     id: "10",
-//     title: "Fix Header CSS",
-//     description:
-//       "Mobile menu is overlapping the logo on screens smaller than 360px.",
-//     projectId: "1",
-//     status: "done",
-//     priority: "high",
-//     dueDate: "Next Week",
-//     tags: ["ui", "bug"],
-//     subtasks: [{ id: "1", title: "Debug z-index issue", completed: true }],
-//     comments: [],
-//   },
-//   {
-//     id: "11",
-//     title: "Write API Documentation",
-//     description: "Document the v2 endpoints using Swagger/OpenAPI.",
-//     projectId: "2",
-//     status: "todo",
-//     priority: "low",
-//     dueDate: "Today",
-//     tags: ["documentation"],
-//     subtasks: [
-//       { id: "1", title: "Define user schemas", completed: false },
-//       { id: "2", title: "Export JSON spec", completed: false },
-//     ],
-//     comments: [],
-//   },
-// ];
 export interface Subtask {
   id: string;
   title: string;
