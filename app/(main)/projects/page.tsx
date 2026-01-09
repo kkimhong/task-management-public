@@ -1,12 +1,20 @@
-import React from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import React from 'react';
+import ProjectCard from './components/projectcard';
+// 1. Correct the Link import (it should be from 'next/link')
+import Link from 'next/link'; 
+// 2. Import your data from the db.json file
+import data from '@/db.json'; 
 
-const page = async () => {
-  await new Promise(resolve => setTimeout(resolve, 200))
+const Page = async () => {
+  // 3. Extract the projects array from the imported data
+  const projects = data.projects;
+
+  await new Promise(resolve => setTimeout(resolve, 200));
+
   return (
-    // 'space-y-4' adds a 16px gap between each card
-    <div className="p-4 space-y-4 "> 
+    <div className="p-4 space-y-4"> 
       {projects.map((project: any) => (
-        // Adding 'className="block"' prevents the "link icon" issue
         <Link href={`/projects/${project.id}`} key={project.id} className="block">
           <ProjectCard project={project} />
         </Link>
@@ -14,3 +22,5 @@ const page = async () => {
     </div>
   );
 }
+
+export default Page;
