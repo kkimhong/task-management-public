@@ -1,17 +1,23 @@
-import { resolve } from 'path';
-import React from 'react'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import ProjectCard from "./components/projectcard";
 
-type Props = {}
-
-const page = async (props: Props) => {
-  await new Promise(resolve => setTimeout(resolve, 200))
-  return (
-    <div className="flex h-screen justify-center items-center">
-      <div className="px-8 py-4 rounded-2xl border border-zinc-500 ">
-        <h1 className="font-semibold">All Project</h1>
-      </div>
-    </div>
-  );
+async function getProjects() {
+  const res = await fetch('http://localhost:3001/projects', { cache: 'no-store' });
+  
+  if (!res.ok) {
+    throw new Error('Failed to fetch data');
+  }
+  return res.json();
 }
 
-export default page
+export default async function Page() {
+  const projects = await getProjects();
+
+  return (
+    <div className="p-4 space-y-4">
+  {projects.map((project: any) => (
+    <ProjectCard key={project.id} project={project} />
+  ))}
+</div>
+  );
+}
