@@ -18,7 +18,6 @@ import {
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
 import { TeamSwitcher } from "@/components/team-switcher";
 import {
@@ -28,6 +27,7 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar";
+import { NavProjects } from "./nav-projects";
 
 const data = {
   user: {
@@ -82,12 +82,12 @@ const data = {
     },
     {
       name: "Task",
-      url: "tasks",
+      url: "/tasks",
       icon: ClipboardCheck,
     },
     {
       name: "Project",
-      url: "projects",
+      url: "/projects",
       icon: Folder,
     },
   ],

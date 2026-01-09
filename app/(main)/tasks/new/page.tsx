@@ -1,16 +1,164 @@
-import React from 'react'
+"use client";
 
-type Props = {}
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { Save, X } from "lucide-react";
 
-const page = async (props: Props) => {
-  await new Promise((resolve) => setTimeout(resolve, 200));
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Field,
+  FieldLabel,
+  FieldError,
+  FieldGroup,
+  FieldSet,
+} from "@/components/ui/field";
+import { TaskFormValues, taskSchema } from "@/app/validations/task-schema";
+
+export default function NewTaskPage() {
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors, isSubmitting },
+  } = useForm<TaskFormValues>({
+    resolver: zodResolver(taskSchema),
+    defaultValues: { priority: "medium", status: "todo" },
+  });
+
+  const onSubmit = (data: TaskFormValues) => console.log(data);
+
   return (
-    <div className="flex h-screen justify-center items-center">
-      <div className="px-8 py-4 rounded-2xl border border-zinc-500 ">
-        <h1 className="font-semibold">New task</h1>
-      </div>
-    </div>
+    <main className="w-full p-4 md:p-6 bg-background">
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <Card className="w-full border-none shadow-none md:border md:shadow-xl">
+          <CardHeader className="flex flex-row items-center justify-between py-4 space-y-0 border-b mb-4">
+            <CardTitle className="text-xl font-bold">New Task</CardTitle>
+
+            <div className="flex items-center gap-2">
+              <Button variant="outline" size="sm" type="button">
+                <X className="w-4 h-4 mr-1" /> Cancel
+              </Button>
+              <Button type="submit" size="sm" disabled={isSubmitting}>
+                <Save className="w-4 h-4 mr-1" />
+                {isSubmitting ? "Saving..." : "Create Task"}
+              </Button>
+            </div>
+          </CardHeader>
+
+          <CardContent className="space-y-4">
+            <FieldSet>
+              <FieldGroup className="space-y-4">
+                <Field>
+                  <FieldLabel className="text-xs font-semibold text-muted-foreground">
+                    TASK TITLE
+                  </FieldLabel>
+                  <Input
+                    placeholder="What needs to be done?"
+                    {...register("title")}
+                  />
+                  <FieldError>{errors.title?.message}</FieldError>
+                </Field>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4">
+                  <Field>
+                    <FieldLabel className="text-xs font-semibold text-muted-foreground">
+                      PROJECT ID
+                    </FieldLabel>
+                    <Input
+                      placeholder="Project-101"
+                      {...register("projectId")}
+                    />
+                    <FieldError>{errors.projectId?.message}</FieldError>
+                  </Field>
+
+                  <Field>
+                    <FieldLabel className="text-xs font-semibold text-muted-foreground">
+                      DUE DATE
+                    </FieldLabel>
+                    <Input type="date" {...register("dueDate")} />
+                    <FieldError>{errors.dueDate?.message}</FieldError>
+                  </Field>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-4">
+                  <Controller
+                    control={control}
+                    name="priority"
+                    render={({ field }) => (
+                      <Field>
+                        <FieldLabel className="text-xs font-semibold text-muted-foreground">
+                          PRIORITY
+                        </FieldLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="low">Low</SelectItem>
+                            <SelectItem value="medium">Medium</SelectItem>
+                            <SelectItem value="high">High</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </Field>
+                    )}
+                  />
+
+                  <Controller
+                    control={control}
+                    name="status"
+                    render={({ field }) => (
+                      <Field>
+                        <FieldLabel className="text-xs font-semibold text-muted-foreground">
+                          STATUS
+                        </FieldLabel>
+                        <Select
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}>
+                          <SelectTrigger>
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="todo">To Do</SelectItem>
+                            <SelectItem value="in-progress">
+                              In Progress
+                            </SelectItem>
+                            <SelectItem value="done">Done</SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </Field>
+                    )}
+                  />
+                </div>
+
+                <Field>
+                  <FieldLabel className="text-xs font-semibold text-muted-foreground">
+                    DESCRIPTION
+                  </FieldLabel>
+                  <Textarea
+                    placeholder="Provide additional context..."
+                    className="min-h-[120px] resize-none"
+                    {...register("description")}
+                  />
+                  <FieldError>{errors.description?.message}</FieldError>
+                </Field>
+              </FieldGroup>
+            </FieldSet>
+          </CardContent>
+        </Card>
+      </form>
+    </main>
   );
 }
-
-export default page
