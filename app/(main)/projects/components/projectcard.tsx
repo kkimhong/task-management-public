@@ -4,11 +4,13 @@ import React from "react";
 
 export interface ProjectProps {
   id: string;
-  name: string;        // From db.json
-  description: string; // From db.json
+  slug: string;
+  name: string;       
+  description: string; 
   tasksCompleted: number;
-  tasksTotal: number;  // From db.json
-  color: string;       // From db.json
+  status: boolean;
+  tasksTotal: number;  
+  color: string;       
   dueDate: string;
 }
 

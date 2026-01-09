@@ -61,15 +61,15 @@ const data = {
       items: [
         {
           title: "Marketing Campaign",
-          url: "/project-management/marketing-campaign",
+          url: "/projects/1",
         },
         {
           title: "Product Launch",
-          url: "/project-management/product-launch",
+          url: "/projects/2",
         },
         {
           title: "Engineering",
-          url: "/project-management/engineering",
+          url: "/projects/3",
         },
       ],
     },
