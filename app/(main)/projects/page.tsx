@@ -1,16 +1,7 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import Link from "next/link";
-import ProjectCard from "./components/projectcard";
+import React from 'react'
 
-async function getProjects() {
-  const res = await fetch('http://localhost:3001/projects', { cache: 'no-store' });
-  if (!res.ok) throw new Error('Failed to fetch data');
-  return res.json();
-}
-
-export default async function Page() {
-  const projects = await getProjects();
-
+const page = async () => {
+  await new Promise(resolve => setTimeout(resolve, 200))
   return (
     // 'space-y-4' adds a 16px gap between each card
     <div className="p-4 space-y-4 "> 
