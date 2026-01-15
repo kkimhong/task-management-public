@@ -5,12 +5,12 @@ import React from "react";
 export interface ProjectProps {
   id: string;
   slug: string;
-  name: string;       
-  description: string; 
+  name: string;
+  description: string;
   tasksCompleted: number;
   status: boolean;
-  tasksTotal: number;  
-  color: string;       
+  tasksTotal: number;
+  color: string;
   dueDate: string;
 }
 
@@ -24,7 +24,9 @@ const ProjectCard = ({ project }: { project: ProjectProps }) => {
         <div className="flex items-center gap-2.5">
           {/* Dot size matched to photo */}
           <span className={`h-2.5 w-2.5 rounded-full ${project.color}`} />
-          <CardTitle className="text-[15px] font-bold leading-none">{project.name}</CardTitle>
+          <CardTitle className="text-[15px] font-bold leading-none">
+            {project.name}
+          </CardTitle>
         </div>
         <p className="text-[14px] text-gray-500 line-clamp-1">
           {project.description}
@@ -41,8 +43,8 @@ const ProjectCard = ({ project }: { project: ProjectProps }) => {
             </span>
           </div>
           <div className="h-1 w-full bg-gray-100 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-black transition-all duration-500" 
+            <div
+              className="h-full bg-black transition-all duration-500"
               style={{ width: `${progressPercent}%` }}
             />
           </div>

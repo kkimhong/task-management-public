@@ -11,7 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
-import { fetchTasks } from "@/services/api";
+import { fetchTasks } from "@/lib/services/api";
 import Loading from "@/app/(main)/loading";
 
 export function SectionCards() {
