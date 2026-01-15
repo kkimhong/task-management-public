@@ -2,7 +2,6 @@
 
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
 import { Save, X } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -24,49 +23,58 @@ import {
   FieldSet,
 } from "@/components/ui/field";
 import { TaskFormValues, taskSchema } from "@/app/validations/task-schema";
-import {
-  QueryClient,
-  useMutation,
-  useQueryClient,
-} from "@tanstack/react-query";
-import { createTask } from "@/lib/services/api";
-import { da } from "zod/v4/locales";
-import { useRouter } from "next/navigation";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { fetchTaskById, updateTask } from "@/lib/services/api";
+import { useParams, useRouter } from "next/navigation";
+import Loading from "@/app/(main)/loading";
 import { toast } from "sonner";
 
-export default function NewTaskPage() {
-  const queryClient = useQueryClient();
+export default function EditTaskPage() {
+  const params = useParams();
+  const id = params.id as string;
   const router = useRouter();
+  const queryClient = useQueryClient();
+
+  const { data: task, isLoading } = useQuery({
+    queryKey: ["tasks", id],
+    queryFn: () => fetchTaskById(id),
+    enabled: !!id,
+  });
+
   const {
     register,
     handleSubmit,
-    reset,
     control,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<TaskFormValues>({
     resolver: zodResolver(taskSchema),
-    defaultValues: { priority: "medium", status: "todo" },
+    values: task,
   });
 
   const mutation = useMutation({
-    mutationFn: createTask,
+    mutationFn: updateTask,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
-      reset();
       router.push("/tasks");
-      toast.success("Task has been created");
+      toast.success("Task has been updated");
     },
   });
 
-  const onSubmit = (data: TaskFormValues) => {
-    mutation.mutate(data);
+  const onUpdate = (data: TaskFormValues) => {
+    mutation.mutate({
+      id,
+      data,
+    });
   };
+
+  if (isLoading) return <Loading />;
+
   return (
     <main className="w-full p-4 md:p-6 bg-background">
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={handleSubmit(onUpdate)}>
         <Card className="w-full border shadow-none md:border md:shadow-md">
           <CardHeader className="flex flex-row items-center justify-between py-4 space-y-0 border-b mb-4">
-            <CardTitle className="text-xl font-bold">New Task</CardTitle>
+            <CardTitle className="text-xl font-bold">Update Task</CardTitle>
 
             <div className="flex items-center gap-2">
               <Button
@@ -77,9 +85,9 @@ export default function NewTaskPage() {
               >
                 <X className="w-4 h-4 mr-1" /> Cancel
               </Button>
-              <Button type="submit" size="sm" disabled={isSubmitting}>
+              <Button type="submit" size="sm" disabled={mutation.isPending}>
                 <Save className="w-4 h-4 mr-1" />
-                {isSubmitting ? "Saving..." : "Create Task"}
+                {mutation.isPending ? "Saving..." : "Update Task"}
               </Button>
             </div>
           </CardHeader>

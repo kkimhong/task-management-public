@@ -14,7 +14,15 @@ import {
   type SortingState,
   type VisibilityState,
 } from "@tanstack/react-table";
-import { ChevronDown, Flag, MoreHorizontal, Plus } from "lucide-react";
+import {
+  ChevronDown,
+  Copy,
+  Eye,
+  Flag,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -36,9 +44,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "../../components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
-import { fetchTasks } from "@/services/api";
+
+import { fetchTasks } from "@/lib/services/api";
+import { Badge } from "@/components/ui/badge";
 import Loading from "./loading";
 export interface Subtask {
   id: string;
@@ -147,7 +156,6 @@ export const columns: ColumnDef<Task>[] = [
     accessorKey: "dueDate",
     header: () => <div className="text-right">Due Date</div>,
     cell: ({ row }) => {
-      const dueDate = parseFloat(row.getValue("dueDate"));
       return <div className="text-right">{row.getValue("dueDate")}</div>;
     },
   },
@@ -168,15 +176,24 @@ export const columns: ColumnDef<Task>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(taskID)}>
+              onClick={() => navigator.clipboard.writeText(taskID)}
+            >
+              <Copy />
               Copy task ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href={`/tasks/${taskID}`}>View Task Details</Link>
+              <Link href={`/tasks/${taskID}`}>
+                <Eye />
+                View Task Details
+              </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem>Edit task</DropdownMenuItem>
-            <DropdownMenuItem>Delete task</DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <Link href={`/tasks/${taskID}/edit`}>
+                <Pencil />
+                Edit task
+              </Link>
+            </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );
@@ -193,7 +210,7 @@ export function DataTableDemo() {
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-    []
+    [],
   );
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({});
@@ -257,7 +274,8 @@ export function DataTableDemo() {
                     checked={column.getIsVisible()}
                     onCheckedChange={(value) =>
                       column.toggleVisibility(!!value)
-                    }>
+                    }
+                  >
                     {column.id}
                   </DropdownMenuCheckboxItem>
                 );
@@ -277,7 +295,7 @@ export function DataTableDemo() {
                         ? null
                         : flexRender(
                             header.column.columnDef.header,
-                            header.getContext()
+                            header.getContext(),
                           )}
                     </TableHead>
                   );
@@ -290,12 +308,13 @@ export function DataTableDemo() {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && "selected"}>
+                  data-state={row.getIsSelected() && "selected"}
+                >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
                         cell.column.columnDef.cell,
-                        cell.getContext()
+                        cell.getContext(),
                       )}
                     </TableCell>
                   ))}
@@ -305,7 +324,8 @@ export function DataTableDemo() {
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center">
+                  className="h-24 text-center"
+                >
                   No results.
                 </TableCell>
               </TableRow>
@@ -323,14 +343,16 @@ export function DataTableDemo() {
             variant="outline"
             size="sm"
             onClick={() => table.previousPage()}
-            disabled={!table.getCanPreviousPage()}>
+            disabled={!table.getCanPreviousPage()}
+          >
             Previous
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={() => table.nextPage()}
-            disabled={!table.getCanNextPage()}>
+            disabled={!table.getCanNextPage()}
+          >
             Next
           </Button>
         </div>

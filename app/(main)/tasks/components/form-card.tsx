@@ -33,15 +33,29 @@ import { formSchema } from "@/app/validations/task-schema";
 import { Checkbox } from "@radix-ui/react-checkbox";
 import { Label } from "@radix-ui/react-label";
 import { fi } from "zod/v4/locales";
-import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@radix-ui/react-select";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@radix-ui/react-select";
 
 export function TaskForm() {
-  const {control, handleSubmit, register, formState:{errors}, reset} = useForm<z.infer<typeof formSchema>>({
+  const {
+    control,
+    handleSubmit,
+    register,
+    formState: { errors },
+    reset,
+  } = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       title: "",
       description: "",
-      priority: "EASY"
+      priority: "EASY",
     },
   });
 
@@ -154,10 +168,12 @@ export function TaskForm() {
                   <Select
                     name={field.name}
                     value={field.value}
-                    onValueChange={field.onChange}>
+                    onValueChange={field.onChange}
+                  >
                     <SelectTrigger
                       aria-invalid={fieldState.invalid}
-                      id="priority">
+                      id="priority"
+                    >
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent>
@@ -180,7 +196,8 @@ export function TaskForm() {
           <Button
             type="submit"
             form="form-rhf-demo"
-            onClick={() => handleSubmit}>
+            onClick={() => handleSubmit}
+          >
             Submit
           </Button>
         </Field>

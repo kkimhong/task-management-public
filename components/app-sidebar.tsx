@@ -33,7 +33,7 @@ const data = {
   user: {
     name: "kruy kimhong",
     email: "kruykimhongkkh@gmail.com.com",
-    avatar: "/src/assets/m3_photo.jpg",
+    avatar: "https://cdn-icons-png.flaticon.com/512/5787/5787016.png",
   },
   teams: [
     {

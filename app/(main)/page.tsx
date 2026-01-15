@@ -1,4 +1,3 @@
-
 import { DataTableDemo } from "@/app/(main)/data-table";
 import { SectionCards } from "@/components/section-card";
 

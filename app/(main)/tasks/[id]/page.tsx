@@ -1,8 +1,7 @@
 "use client";
 
-import { useParams } from "next/navigation";
-import { useQuery } from "@tanstack/react-query";
-import { fetchTaskById } from "@/services/api";
+import { useParams, useRouter } from "next/navigation";
+import { fetchTaskById } from "@/lib/services/api";
 import { Badge } from "@/components/ui/badge";
 import Loading from "../../loading";
 import {
@@ -17,11 +16,14 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback } from "@radix-ui/react-avatar";
-import { MessageSquare } from "lucide-react";
+import { MessageSquare, Plus, X } from "lucide-react";
+import { DeleteDialog } from "../components/delete-dialog";
+import { useQuery } from "@tanstack/react-query";
 
 export default function TaskDetailPage() {
   const params = useParams();
   const id = params.id as string;
+  const router = useRouter();
 
   const {
     data: task,
@@ -42,7 +44,17 @@ export default function TaskDetailPage() {
   };
   const commentCount = task.comments?.length || 0;
   return (
-    <div className="flex flex-col space-y-4 my-4">
+    <div className="flex flex-col space-y-4">
+      <div className="flex justify-end my-4 space-x-4">
+        <Button onClick={router.back} variant={"outline"}>
+          <X />
+          Cancel
+        </Button>
+        <Button>
+          <Plus />
+          New Subtask
+        </Button>
+      </div>
       <Card>
         <CardHeader>
           <CardTitle>{task.title}</CardTitle>
@@ -61,7 +73,8 @@ export default function TaskDetailPage() {
             {task.subtasks?.map((subtask: unknown) => (
               <div
                 key={subtask.id}
-                className="flex items-center space-x-3 p-2 rounded-md border bg-card">
+                className="flex items-center space-x-3 p-2 rounded-md border bg-card"
+              >
                 <Checkbox
                   id={subtask.id}
                   checked={subtask.completed}
@@ -73,7 +86,8 @@ export default function TaskDetailPage() {
                     subtask.completed
                       ? "line-through text-muted-foreground"
                       : ""
-                  }`}>
+                  }`}
+                >
                   {subtask.title}
                 </label>
               </div>
@@ -119,6 +133,9 @@ export default function TaskDetailPage() {
           </div>
         </CardContent>
       </Card>
+      <div className="flex justify-end my-4 space-x-4">
+        <DeleteDialog />
+      </div>
     </div>
   );
 }
